@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head> 
+	<title>Snake Game</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<style>
+		#container{
+			margin: auto;
+			width: 600px;
+		}
+
+		#gameover{
+			position: absolute;
+			top: 200px;
+			left:600px;
+			font-size: 25px;
+			text-align: center;
+			color: #FFFFFF;
+			display: none;
+		}
+		#myCanvas{
+			background-color: #000000;
+			border: 1px gray solid;
+		}
+		#score{
+			width: 560px;
+			height: 80px;
+			margin: auto;
+			background-color: lightgrey;
+			font-size:15px;
+			padding: 20px;
+			font-weight: bold;
+		}
+		#current, #highest{
+			font-size:25px;
+			color: black;
+			text-align: center;
+		}
+		a{
+			text-decoration: none;
+			color:#fff;
+		}
+		span{
+			color:#fff;
+		}
+	</style>
+	<script type="text/javascript">
+		$(document).ready(function(){
+		var canvas = $("#myCanvas")[0];
+		var ctx = canvas.getContext("2d");
+		var w = $("#myCanvas").width();
+		var h = $("#myCanvas").height();
+		var cw = 15;
+		var food;
+		var snake;
+		var d ="RIGHT";
+
+		var gameloop = setInterval(update,100);
+
+		function update(){
+			if(d=="RIGHT"){
+				snake.x = snake.x+1;
+			}
+			if(d=="LEFT"){
+				snake.x = snake.x-1;
+			}
+			if(d=="UP"){
+				snake.y -=1;
+			}
+			if(d=="DOWN"){
+				snake.y +=1;
+			}
+
+			checkBorders();
+			checkFood();
+			blank();
+			paintCell(food.x,food.y,"grey");
+			paintCell(snake.x,snake.y,"green");
+		}
+
+		//to run when the game is over
+		function showGameOver(){
+			var current = $("#current").text();
+			$("#final").text(current);
+			$("#gameover").fadeIn();
+		}
+
+		// change high score after game is over
+		function updateHighScore(){
+			var current = $("#current").text();
+			var highest = $("#highest").text();
+			if (parseInt(current) > parseInt(highest)){
+				$("#highest").text(current);
+			}
+		}
+
+		function placeFood(){
+			food ={
+				x=Math.round(Math.random() * (w-cw)/cw),
+				y=Math.round(Math.random() * (h-cw)/cw),
+			}
+		}
+
+		function placeSnake(){
+			snake ={
+				x=Math.round(Math.random() * (w-cw)/cw),
+				y=Math.round(Math.random() * (h-cw)/cw),
+			}
+		}
+
+		function checkBorders(){
+			if(snake.x < 0 || snake.x > (w-cw)/cw || snake.y<0 || snake.y > (h-cw)/cw){
+				clearInterval(gameloop);
+				showGameOver();
+			}
+		}
+
+
+		//to paint the cell either for foof or for snake;
+		function paintCell(x,y,color){
+			ctx.fillStyle = color;
+			ctx.fillRect(x*cw,y*cw,cw,cw);
+			ctx.strokeStyle = "white";
+			ctx.strokeRect(x8cw,y*cw,cw,cw);
+		}
+
+
+		//paint the canvas
+		function blank(){
+			ctx.fillStyle="black";
+			ctx.fillRect(0, 0, w, h);
+			ctx.strokeStyle="white";
+			ctx.strokeRect(0,0,w,h);
+		}
+
+		function checkFood(){
+			if(food.x == snake.x && food.y==snake.y){
+				var current = parseInt($("#current").text());
+				current +=1;
+				$("#current").text(current);
+				placeFood();
+			}
+		}
+	
+		placeFood();
+		paintCell(food.x,food.y,"grey");
+		placeSnake();
+		paintCell(snake.x,snake.y,"green");
+
+		$(document).keydown(function(e){
+			// 37 left, 38 up, 30 right, 40 down
+			var key = e.which;
+			if(key == "37"){
+				snake.x -=1;
+				d="LEFT"
+			}
+			else if(key =="38"){
+				snake.y -=1;
+				d="UP";
+			}
+			else if(key =="39"){
+				snake.x +=1;
+				d="RIGHT";
+			}
+			else if(key =="40"){
+				snake.y +=1;
+				d="DOWN";
+			}
+
+			checkFood();
+			blank();
+			color = "grey";
+			paintCell(food.x, food.y);
+			color = "green";
+			paintCell(snake.x, snake.y)
+		});
+	})
+	</script>
+</head>
+<body>
+	<div id="container">
+		<div id="gameover">
+			GameOver :
+			<br>
+			Your score is <span id="final">0</span>
+			<a href="#" onClick="window.location.reload()">Click here to play again</a>
+		</div>
+		<canvas id="myCanvas" width="600" height="450">
+			Your browser doesn't support the canvas feature
+		</canvas>
+		<div id="score">
+			<div>Current Score <span id="current">0</span></div>
+			<div>High Score <span id="highest">3</span></div>
+		</div>
+	</div>
+
+</body>
+</html>

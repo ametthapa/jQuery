@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Slider</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="http://malsup.github.io/jquery.cycle.all.js"></script>
+</head>
+<body>
+    <div id="container">
+        <h1>Kids</h1>
+        <div class="slider">
+            <img src="img/first.jpg" alt="first" height="426" width="640">
+            <img src="img/second.jpg" alt="first" height="426" width="640">
+            <img src="img/third.jpg" alt="first" height="426" width="640">
+            <img src="img/fourth.jpg" alt="first" height="426" width="640">
+            <img src="img/fifth.jpg" alt="first" height="426" width="640">
+        </div>
+        <ul id="nav">
+            <li id="prev"><a href="#">Previous</a></li>
+            <li id="next"><a href="#">Next</a></li>
+        </ul>
+
+    </div>
+    <script>
+        $(document).ready(function(){
+            $(".slider").cycle({
+                fx:'curtainX',
+                pause:1,
+                prev:'#prev',
+                next:'#next',
+
+            });
+        });
+    </script>
+</body>
+</html>
